@@ -13,16 +13,22 @@ public class Pokemon {
     @Column(nullable = false)
     private int vida;
     private boolean isShiny;
-    @OneToOne(optional = false)
+
+    @ManyToOne(optional = false)
     @JoinColumn(name = "id_tipo")
     private Tipo tipo;
 
-    @OneToMany(mappedBy = "pokemon", cascade= CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "pokemon_ataque",
+            joinColumns = @JoinColumn(name = "id_pokemon"),
+            inverseJoinColumns = @JoinColumn(name = "id_ataque")
+    )
     private List<Ataque> ataques;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
 
     public Pokemon(String nombre, int vida, boolean isShiny, Tipo tipo, List<Ataque> ataques) {
@@ -40,7 +46,8 @@ public class Pokemon {
         this.tipo = tipo;
     }
 
-    public Pokemon() {}
+    public Pokemon() {
+    }
 
 
     public String getNombre() {

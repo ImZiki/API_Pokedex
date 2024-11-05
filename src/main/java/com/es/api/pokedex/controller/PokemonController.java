@@ -26,12 +26,19 @@ public class PokemonController {
 
     @PostMapping("/")
     public PokemonDTO insert(@RequestBody PokemonDTO pokemonDTO) {
-        return null;
+        return service.insert(pokemonDTO);
     }
 
     @PutMapping("/{id}")
     public PokemonDTO update(@RequestBody PokemonDTO  pokemonDTO, @PathVariable String id) {
-        return null;
+        return service.update(pokemonDTO,id);
+    }
+
+    @DeleteMapping("/{id}")
+    public PokemonDTO delete(@PathVariable String id) {
+        if(id == null || id.isEmpty()) return null;
+
+        return service.delete(id);
     }
 
 }

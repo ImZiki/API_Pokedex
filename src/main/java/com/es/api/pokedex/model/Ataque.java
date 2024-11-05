@@ -2,24 +2,27 @@ package com.es.api.pokedex.model;
 
 import jakarta.persistence.*;
 
+import java.util.List;
+
 @Entity
 @Table(name = "ataques")
 public class Ataque {
 
     @Column(nullable = false)
     private int danioBase;
+
     @Column(nullable = false)
     private boolean isEspecial;
-    @OneToOne
+
+    @ManyToOne
     @JoinColumn(name = "id_tipo")
     private Tipo tipo;
 
+    @ManyToMany(mappedBy = "ataques", fetch = FetchType.EAGER)
+    private List<Pokemon> pokemon;
+
     @Id
     private String nombre;
-
-    @ManyToOne
-    @JoinColumn(name = "id_pokemon")
-    private Pokemon pokemon;
 
     public Ataque(int danioBase, boolean isEspecial, Tipo tipo, String nombre) {
         this.danioBase = danioBase;
@@ -60,5 +63,13 @@ public class Ataque {
 
     public void setNombre(String nombre) {
         this.nombre = nombre;
+    }
+
+    public List<Pokemon> getPokemon() {
+        return pokemon;
+    }
+
+    public void setPokemon(List<Pokemon> pokemon) {
+        this.pokemon = pokemon;
     }
 }
